@@ -1,17 +1,17 @@
-package org.firstinspires.ftc.teamcode.robot.subsytems;
+package org.firstinspires.ftc.teamcode.SubSys;
 
-import com.kauailabs.navx.ftc.AHRS;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.RobotConstants;
-import org.firstinspires.ftc.teamcode.util.Encoder;
+
 
 import java.util.Locale;
 
-public class DriveSystemV2 {
+public class Drive {
     private DcMotorEx frontLeft;
     private DcMotorEx frontRight;
     private DcMotorEx backLeft;
@@ -20,7 +20,7 @@ public class DriveSystemV2 {
     private double headingToMaintain = 0;
     private String whatHeadingDo;
 
-    public DriveSystemV2(DcMotorEx fL, DcMotorEx fR, DcMotorEx bL, DcMotorEx bR, IMU n) {
+    public Drive(DcMotorEx fL, DcMotorEx fR, DcMotorEx bL, DcMotorEx bR, IMU n) {
         this.frontLeft = fL;
         this.frontRight = fR;
         this.backLeft = bL;
