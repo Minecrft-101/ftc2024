@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.SubSys;
 
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RobotConstants;
 
-public class Shoulder {
+public class Arm {
     private DcMotorEx motor;
     private TouchSensor touch;
     private PIDCoefficients coeffs;
@@ -23,24 +23,23 @@ public class Shoulder {
     private ElapsedTime timer = new ElapsedTime();
 
     private double power = 0;
-    private boolean manualMoving = false;
 
-    public Shoulder(DcMotorEx m, TouchSensor t) {
+    public Arm(DcMotorEx m , TouchSensor t) {
         this.motor = m;
         this.touch = t;
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        this.coeffs = new PIDCoefficients(RobotConstants.shoulder_kP,RobotConstants.shoulder_kI,RobotConstants.shoulder_kD);
-        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)->RobotConstants.shoulder_kG);
+        this.coeffs = new PIDCoefficients(RobotConstants.arm_kP,RobotConstants.arm_kI,RobotConstants.arm_kD);
+        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)->RobotConstants.arm_kG);
         this.controller.setOutputBounds(-1,1);
 
         this.profile = MotionProfileGenerator.generateSimpleMotionProfile(
                 new MotionState(0,0,0),
                 new MotionState(0,0,0),
-                RobotConstants.shoulder_maxVel,
-                RobotConstants.shoulder_maxAccel,
-                RobotConstants.shoulder_maxJerk
+                RobotConstants.arm_maxVel,
+                RobotConstants.arm_maxAccel,
+                RobotConstants.arm_maxJerk
         );
     }
 
@@ -49,46 +48,40 @@ public class Shoulder {
         return this.motor.getCurrentPosition();
     }
 
-    public boolean getTouchValue() {
-        return this.touch.isPressed();
-    }
-
     //input > 0 shoulder goes down
-    public double moveManual(double input){
-        this.manualMoving = true;
-        if (this.touch.isPressed() && input > 0) {
+
+
+    public void moveManual(double input){
+        if (this.touch.isPressed() && input < 0){
             this.motor.setPower(0);
             this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         } else {
             this.motor.setPower(input);
         }
-        setPosition(this.motor.getCurrentPosition());
-        return this.motor.getPower();
     }
 
     public void resetShoulder(){
-        this.motor.setPower(.25);
+        this.motor.setPower(-.25);
         while (!this.touch.isPressed()) {}
         this.motor.setPower(0);
         this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.lastTarget = this.motor.getCurrentPosition();
     }
 
     //@param target - encoder counts 0 to negative numbers
     public void setPosition(int t){
         //convert centimeters to ticks
         this.target = t;
+        this.coeffs = new PIDCoefficients(RobotConstants.arm_kP,RobotConstants.arm_kI,RobotConstants.arm_kD);
+        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)->RobotConstants.arm_kG);
         if (this.target != this.lastTarget) {
-            this.coeffs = new PIDCoefficients(RobotConstants.shoulder_kP,RobotConstants.shoulder_kI,RobotConstants.shoulder_kD);
-            this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)->RobotConstants.shoulder_kG);
             this.profile = MotionProfileGenerator.generateSimpleMotionProfile(
                     new MotionState(this.motor.getCurrentPosition(),0,0),
                     new MotionState(this.target,0,0),
-                    RobotConstants.shoulder_maxVel,
-                    RobotConstants.shoulder_maxAccel,
-                    RobotConstants.shoulder_maxJerk
+                    RobotConstants.arm_maxVel,
+                    RobotConstants.arm_maxAccel,
+                    RobotConstants.arm_maxJerk
             );
             this.lastTarget = this.target;
             this.timer.reset();
@@ -99,27 +92,24 @@ public class Shoulder {
         return this.target;
     }
 
-    public double update() {
-        double correction = 0;
-        if (!this.manualMoving) {
-            MotionState state = this.profile.get(this.timer.seconds());
-            this.controller.setTargetPosition(state.getX());
-            this.controller.setTargetVelocity(state.getV());
-            this.controller.setTargetAcceleration(state.getA());
-            int motor_Pos = this.motor.getCurrentPosition();
-            correction = controller.update(motor_Pos);
+    public double update(){
+        MotionState state = this.profile.get(this.timer.seconds());
+        this.controller.setTargetPosition(state.getX());
+        this.controller.setTargetVelocity(state.getV());
+        this.controller.setTargetAcceleration(state.getA());
+        int motor_Pos = this.motor.getCurrentPosition();
+        double correction = this.controller.update(motor_Pos);
 
-            if (this.touch.isPressed() && correction > 0) {
-                this.motor.setPower(0);
-                this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                this.lastTarget = 0;
-                this.target = 0;
-            } else {
-                this.motor.setPower(correction);
-            }
+        if (this.touch.isPressed() && correction>0) {
+            this.motor.setPower(0);
+            this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            this.lastTarget = 0;
+            this.target = 0;
+        } else {
+            this.motor.setPower(correction);
         }
-        this.manualMoving = false;
+
         return correction;
     }
 }
