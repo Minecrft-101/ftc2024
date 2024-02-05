@@ -1,5 +1,5 @@
-
 package org.firstinspires.ftc.teamcode;
+
 
 import java.lang.Math;
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -18,6 +18,9 @@ public class TeleOpMain extends LinearOpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = dashboard.getTelemetry();
 
+        TouchSensor button = hardwareMap.get(TouchSensor.class, "extLimit");
+        int val = 0;
+
         Arm arm = new Arm(hardwareMap.get(DcMotorEx.class,"armRot"), hardwareMap.get(TouchSensor.class, "armLimit"));
         Stretch ext = new Stretch(hardwareMap.get(DcMotorEx.class, "armExt"), hardwareMap.get(TouchSensor.class, "extLimit"));
         //arm.setPosition(RobotConstants.arm_pickUp);
@@ -33,24 +36,30 @@ public class TeleOpMain extends LinearOpMode {
 
 
                 if (gamepad1.a) {
+                    ext.setPosition(RobotConstants.stretch_dropOffPos);
                     arm.setPosition(RobotConstants.arm_dropOffPos);
                 }
                 if (gamepad1.b){
+                    ext.setPosition(RobotConstants.stretch_pickUp);
                     arm.setPosition(RobotConstants.arm_pickUp);
                 }
 
                 if (gamepad1.y){
+                    ext.resetStretch();
                     arm.resetShoulder();
                 }
 
-                double correction = arm.update();
-
+                double correctionArm = arm.update();
+                //double correctionExt = ext.update();
 
                 ext.moveManual(left_y);
 
                 telemetry.addData("Arm Rotation", arm.getEncoderValue());
                 telemetry.addData("Arm Target", arm.getTarget());
-                telemetry.addData("arm correction:",correction);
+                telemetry.addData("arm correction:",correctionArm);
+                telemetry.addData("Arm Extension", ext.getEncoderValue());
+                telemetry.addData("Arm Extent Target", ext.getTarget());
+               // telemetry.addData("arm extent correction:",correctionExt);
                 telemetry.update();
             }
         }

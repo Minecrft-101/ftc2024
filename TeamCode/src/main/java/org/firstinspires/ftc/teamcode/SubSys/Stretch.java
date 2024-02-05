@@ -52,7 +52,7 @@ public class Stretch {
 
 
     public void moveManual(double input){
-        if (this.touch.isPressed() && input < 0){
+        if (this.touch.isPressed() && input > 0){
             this.motor.setPower(0);
             this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -62,7 +62,7 @@ public class Stretch {
     }
 
     public void resetStretch(){
-        this.motor.setPower(-.25);
+        this.motor.setPower(.25);
         while (!this.touch.isPressed()) {}
         this.motor.setPower(0);
         this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
