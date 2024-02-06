@@ -100,7 +100,7 @@ public class Arm {
         int motor_Pos = this.motor.getCurrentPosition();
         double correction = this.controller.update(motor_Pos);
 
-        if (this.touch.isPressed() && correction>0) {
+        if (this.touch.isPressed() && correction < 0) {
             this.motor.setPower(0);
             this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

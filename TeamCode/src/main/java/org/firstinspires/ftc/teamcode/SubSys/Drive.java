@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.SubSys;
 
-
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -11,12 +11,12 @@ import org.firstinspires.ftc.teamcode.RobotConstants;
 
 import java.util.Locale;
 
-public class Drive {
+public class Drive{
     private DcMotorEx frontLeft;
     private DcMotorEx frontRight;
     private DcMotorEx backLeft;
     private DcMotorEx backRight;
-    private IMU navX;
+    private IMU imu;
     private double headingToMaintain = 0;
     private String whatHeadingDo;
 
@@ -25,7 +25,13 @@ public class Drive {
         this.frontRight = fR;
         this.backLeft = bL;
         this.backRight = bR;
-        this.navX = n;
+        this.imu = n;
+
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+
+        imu.initialize(parameters);
 
         this.frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
         this.backLeft.setDirection(DcMotorEx.Direction.REVERSE);
@@ -72,11 +78,11 @@ public class Drive {
         //+,+,- f goes f, l goes l,rot r goes right
 
 
-        double x = -leftStickY * RobotConstants.MULTIPLIER;
-        double y = -leftStickX * RobotConstants.MULTIPLIER; // Counteract imperfect strafing
+        double y = -leftStickY * RobotConstants.MULTIPLIER;
+        double x = -leftStickX * RobotConstants.MULTIPLIER; // Counteract imperfect strafing
         double rx = -rightStickX * 0.5 * RobotConstants.MULTIPLIER; //what way we want to rotate
 
-        double robotHeading = navX.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         if(rx == 0){ //this means that we're trying to maintain our current heading
 
@@ -100,8 +106,8 @@ public class Drive {
             this.headingToMaintain = robotHeading;
         }
         //triangle """magic"""
-        double rotX = x * Math.cos(robotHeading) - y * Math.sin(robotHeading);
-        double rotY = x * Math.sin(robotHeading) + y * Math.cos(robotHeading);
+        double rotX = x * Math.cos(-robotHeading) - y * Math.sin(-robotHeading);
+        double rotY = x * Math.sin(-robotHeading) + y * Math.cos(-robotHeading);
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio, but only when
@@ -126,7 +132,7 @@ public class Drive {
      */
     public double figureOutWhatIsShorter() {
         double result;
-        double reading = navX.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double reading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double oppositeButEqualReading;
 
         if (reading > 0) {
