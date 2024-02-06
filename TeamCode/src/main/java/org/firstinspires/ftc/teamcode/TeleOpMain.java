@@ -63,7 +63,7 @@ public class TeleOpMain extends LinearOpMode {
                 double correctionArm = arm.update();
                 double correctionExt = ext.update();
 
-                //drive.drive(left_x, left_y, -right_x);
+                drive.drive(left_x, left_y, -right_x);
 
                 telemetry.addData("Arm Rotation", arm.getEncoderValue());
                 telemetry.addData("Arm Target", arm.getTarget());
