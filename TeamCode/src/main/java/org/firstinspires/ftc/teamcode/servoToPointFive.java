@@ -24,7 +24,7 @@ public class servoToPointFive extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 a.setPosition(0.5);
-                telemetry.addData("arm extent correction:",a.getPosition());
+                telemetry.addData("servo pos",a.getPosition());
                 telemetry.update();
             }
         }
