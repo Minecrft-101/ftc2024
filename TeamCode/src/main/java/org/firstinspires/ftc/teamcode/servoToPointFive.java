@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.SubSys.Arm;
 import org.firstinspires.ftc.teamcode.SubSys.Drive;
 import org.firstinspires.ftc.teamcode.SubSys.Stretch;
 
-@TeleOp(name = "TeleOpMain", group = "_JVBot") // YOU DID NOT HAVE THIS WRITTEN. THIS IS WHAT TELLS THE ROBOT THIS IS AN OPMODE. IMPORT WAS ALSO NOT THERE. -Nick
+@TeleOp(name = "TeleOpMain", group = "_JVBot")
 public class servoToPointFive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
