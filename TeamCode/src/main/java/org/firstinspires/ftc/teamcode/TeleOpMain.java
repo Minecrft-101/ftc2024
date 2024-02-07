@@ -46,16 +46,16 @@ public class TeleOpMain extends LinearOpMode {
                     right_x = 0;
                 }
 
-                if (gamepad1.a) {
+                if (gamepad2.a) {
                     ext.setPosition(RobotConstants.stretch_dropOffPos);
                     arm.setPosition(RobotConstants.arm_dropOffPos);
                 }
-                if (gamepad1.b){
+                if (gamepad2.b){
                     ext.setPosition(RobotConstants.stretch_pickUp);
                     arm.setPosition(RobotConstants.arm_pickUp);
                 }
 
-                if (gamepad1.y){
+                if (gamepad2.y){
                     ext.resetStretch();
                     arm.resetShoulder();
                     ext.setPosition(0);
