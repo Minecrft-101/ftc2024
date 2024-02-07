@@ -58,6 +58,8 @@ public class TeleOpMain extends LinearOpMode {
                 if (gamepad1.y){
                     ext.resetStretch();
                     arm.resetShoulder();
+                    ext.setPosition(0);
+                    arm.setPosition(0);
                 }
 
                 double correctionArm = arm.update();
