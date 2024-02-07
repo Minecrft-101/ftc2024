@@ -32,4 +32,12 @@ public class RobotConstants {
     public static int stretch_maxJerk = 5000;
     public static int stretch_dropOffPos = -2500;
     public static int stretch_pickUp = -400;
+
+    //drive constants
+    public static final float yawMax = 5;
+    public static final float yawCheck = 2.5F;
+    public static final double MULTIPLIER = .5;
+    public static final double STICK_TOLERANCE = 0.1;
+    public static final double MINIMUM_TURNING_SPEED = 0.05;
+    public static final double ANGULAR_TOLERANCE = Math.toRadians(0.5);
 }
