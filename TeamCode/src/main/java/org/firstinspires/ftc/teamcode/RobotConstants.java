@@ -31,7 +31,7 @@ public class RobotConstants {
     public static int stretch_maxAccel = 5000;
     public static int stretch_maxJerk = 5000;
     public static int stretch_dropOffPos = -2500;
-    public static int stretch_pickUp = 0;
+    public static int stretch_pickUp = -400;
 
     //drive constants
     public static final float yawMax = 5;
