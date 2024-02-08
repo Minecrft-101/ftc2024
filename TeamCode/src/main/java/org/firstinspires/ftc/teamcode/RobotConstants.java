@@ -36,8 +36,35 @@ public class RobotConstants {
     //drive constants
     public static final float yawMax = 5;
     public static final float yawCheck = 2.5F;
-    public static final double MULTIPLIER = .5;
+    public static final double MULTIPLIER = 1;
     public static final double STICK_TOLERANCE = 0.1;
     public static final double MINIMUM_TURNING_SPEED = 0.05;
     public static final double ANGULAR_TOLERANCE = Math.toRadians(0.5);
+    public static double x_kP = 0.009;
+    public static final double x_kI = 0;
+    public static double x_kD = 0.0001;
+    public static final double x_kG = 0;
+    public static int x_maxVel = 5000;
+    public static int x_maxAccel = 5000;
+    public static int x_maxJerk = 5000;
+    public static double y_kP = 0.006;
+    public static final double y_kI = 0;
+    public static double y_kD = 0.001;
+    public static final double y_kG = 0;
+    public static int y_maxVel = 5000;
+    public static int y_maxAccel = 5000;
+    public static int y_maxJerk = 5000;
+    public static int yTarget = 0;
+    public static int xTarget = 500;
+    public static double drive_fudge = 1;
+
+
+    // Airplane Launcher
+    public static double airplane_servoPos = 1;
+
+    // Claw
+    public static double wrist_dropOffPos = 1;
+    public static double hand_dropOffPos = 1;
+    public static double wrist_pickUpPos = 1;
+    public static double hand_pickUpPos = 1;
 }

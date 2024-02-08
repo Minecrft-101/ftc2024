@@ -7,9 +7,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.SubSys.Airplane;
 import org.firstinspires.ftc.teamcode.SubSys.Arm;
+import org.firstinspires.ftc.teamcode.SubSys.Claw;
 import org.firstinspires.ftc.teamcode.SubSys.Stretch;
 import org.firstinspires.ftc.teamcode.SubSys.Drive;
 
@@ -23,10 +26,11 @@ public class TeleOpMain extends LinearOpMode {
         TouchSensor button = hardwareMap.get(TouchSensor.class, "extLimit");
         int val = 0;
 
-        Arm arm = new Arm(hardwareMap.get(DcMotorEx.class,"armRot"), hardwareMap.get(TouchSensor.class, "armLimit"));
-        Stretch ext = new Stretch(hardwareMap.get(DcMotorEx.class, "armExt"), hardwareMap.get(TouchSensor.class, "extLimit"));
+        //Arm arm = new Arm(hardwareMap.get(DcMotorEx.class,"armRot"), hardwareMap.get(TouchSensor.class, "armLimit"));
+        //Stretch ext = new Stretch(hardwareMap.get(DcMotorEx.class, "armExt"), hardwareMap.get(TouchSensor.class, "extLimit"));
         Drive drive = new Drive(hardwareMap.get(DcMotorEx.class, "frontLeft"),hardwareMap.get(DcMotorEx.class, "frontRight"),hardwareMap.get(DcMotorEx.class, "backLeft"),hardwareMap.get(DcMotorEx.class, "backRight"), hardwareMap.get(IMU.class, "imu"));
-
+        //Airplane airplane = new Airplane(hardwareMap.get(Servo.class, "yeet"));
+       // Claw claw = new Claw(hardwareMap.get(Servo.class, "hand"),hardwareMap.get(Servo.class, "wrist"));
         //nerd
 
         waitForStart();
@@ -47,30 +51,41 @@ public class TeleOpMain extends LinearOpMode {
                 }
 
                 if (gamepad2.a) {
-                    ext.setPosition(RobotConstants.stretch_dropOffPos);
-                    arm.setPosition(RobotConstants.arm_dropOffPos);
+                    //ext.setPosition(RobotConstants.stretch_dropOffPos);
+                    //arm.setPosition(RobotConstants.arm_dropOffPos);
+                //    claw.set_wristPosition(RobotConstants.wrist_dropOffPos);
+                //    claw.set_handPosition(RobotConstants.hand_dropOffPos);
                 }
                 if (gamepad2.b){
-                    ext.setPosition(RobotConstants.stretch_pickUp);
-                    arm.setPosition(RobotConstants.arm_pickUp);
+                    //ext.setPosition(RobotConstants.stretch_pickUp);
+                    //arm.setPosition(RobotConstants.arm_pickUp);
+                //    claw.set_wristPosition(RobotConstants.wrist_pickUpPos);
+                //    claw.set_handPosition(RobotConstants.hand_pickUpPos);
                 }
 
                 if (gamepad2.y){
-                    ext.resetStretch();
-                    arm.resetShoulder();
+                    //ext.resetStretch();
+                    //arm.resetShoulder();
                 }
 
-                double correctionArm = arm.update();
-                double correctionExt = ext.update();
+                if (gamepad2.right_bumper){
+                //    airplane.setPosition(RobotConstants.airplane_servoPos);
+
+                }
+
+                //double correctionArm = arm.update();
+                //double correctionExt = ext.update();
 
                 drive.drive(left_x, left_y, -right_x);
 
-                telemetry.addData("Arm Rotation", arm.getEncoderValue());
-                telemetry.addData("Arm Target", arm.getTarget());
-                telemetry.addData("arm correction:",correctionArm);
-                telemetry.addData("Arm Extension", ext.getEncoderValue());
-                telemetry.addData("Arm Extent Target", ext.getTarget());
-                telemetry.addData("arm extent correction:",correctionExt);
+                //telemetry.addData("Arm Rotation", arm.getEncoderValue());
+                //telemetry.addData("Arm Target", arm.getTarget());
+                //telemetry.addData("arm correction:",correctionArm);
+                 //telemetry.addData("Arm Extension", ext.getEncoderValue());
+                //telemetry.addData("Arm Extent Target", ext.getTarget());
+                //telemetry.addData("arm extent correction:",correctionExt);
+                telemetry.addData("x_distance",drive.getXDistance());
+                telemetry.addData("y_distance",drive.getYDistance());
                 telemetry.update();
             }
         }
