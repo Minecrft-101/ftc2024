@@ -41,30 +41,38 @@ public class TeleOpMain extends LinearOpMode {
                 double left_x = gamepad1.left_stick_x;
                 double left_y = -gamepad1.left_stick_y;
                 double right_x = gamepad1.right_stick_x;
-                if (Math.abs(left_y)<.1) {
+                if (Math.abs(left_y) < .1) {
                     left_y = 0;
                 }
-                if (Math.abs(left_x)<.1) {
+                if (Math.abs(left_x) < .1) {
                     left_x = 0;
                 }
-                if (Math.abs(right_x)<.1) {
+                if (Math.abs(right_x) < .1) {
                     right_x = 0;
                 }
 
                 if (gamepad2.a) {
-                    //ext.setPosition(RC.stretch_dropOffPos);
-                    //arm.setPosition(RC.arm_dropOffPos);
-                    //claw.setTopHand(RobotConstants.Thand_grab);
+                    ext.setPosition(RobotConstants.stretch_dropOffPos);
                 }
-                if (gamepad2.b){
-                    //ext.setPosition(RC.stretch_pickUp);
-                    //arm.setPosition(RC.arm_pickUp);
-                    //claw.setTopHand(RobotConstants.Thand_drop);
+                if (gamepad2.b) {
+                    ext.setPosition(RobotConstants.stretch_pickUp);
+                }
+
+                if (gamepad2.dpad_left) {
+                    arm.setPosition(RobotConstants.arm_dropOffPos);
+                }
+                if (gamepad2.dpad_right){
+                    arm.setPosition(RobotConstants.arm_pickUp);
+                }
+
+                if (gamepad2.dpad_down) {
+                    claw.setTopHand(RobotConstants.Thand_grab);
+                }
+                if (gamepad2.dpad_up){
+                    claw.setTopHand(RobotConstants.Thand_drop);
                 }
 
                 if (gamepad2.y){
-                    //ext.resetStretch();
-                    //arm.resetShoulder();
                     claw.setWristPos(RobotConstants.wrist_pickUpPos);
                 }
                 if (gamepad2.x){
@@ -73,20 +81,24 @@ public class TeleOpMain extends LinearOpMode {
 
                 if (gamepad2.right_bumper){
                 //    airplane.setPosition(RC.airplane_servoPos);
-
                 }
 
-                //double correctionArm = arm.update();
-                //double correctionExt = ext.update();
+                if (gamepad2.start) {
+                    ext.resetStretch();
+                    arm.resetShoulder();
+                }
+
+                double correctionArm = arm.update();
+                double correctionExt = ext.update();
 
                 drive.drive(left_x, left_y, -right_x);
 
-                //telemetry.addData("Arm Rotation", arm.getEncoderValue());
-                //telemetry.addData("Arm Target", arm.getTarget());
-                //telemetry.addData("arm correction:",correctionArm);
-                 //telemetry.addData("Arm Extension", ext.getEncoderValue());
-                //telemetry.addData("Arm Extent Target", ext.getTarget());
-                //telemetry.addData("arm extent correction:",correctionExt);
+                telemetry.addData("Arm Rotation", arm.getEncoderValue());
+                telemetry.addData("Arm Target", arm.getTarget());
+                telemetry.addData("arm correction:",correctionArm);
+                telemetry.addData("Arm Extension", ext.getEncoderValue());
+                telemetry.addData("Arm Extent Target", ext.getTarget());
+                telemetry.addData("arm extent correction:",correctionExt);
                 telemetry.addData("x_distance",drive.getXDistance());
                 telemetry.addData("y_distance",drive.getYDistance());
                 telemetry.update();
