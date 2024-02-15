@@ -51,46 +51,46 @@ public class TeleOpMain extends LinearOpMode {
                     right_x = 0;
                 }
 
-                if (gamepad2.a) {
+                if (gamepad1.a) {
                     ext.setPosition(RobotConstants.stretch_dropOffPos);
                 }
-                if (gamepad2.b) {
+                if (gamepad1.b) {
                     ext.setPosition(RobotConstants.stretch_pickUp);
                 }
 
-                if (gamepad2.right_bumper) {
+                if (gamepad1.right_bumper) {
                     arm.setPosition(RobotConstants.arm_dropOffPos);
                 }
-                if (gamepad2.left_bumper){
+                if (gamepad1.left_bumper){
                     arm.setPosition(RobotConstants.arm_pickUp);
                 }
 
-                if (gamepad2.dpad_down) {
+                if (gamepad1.dpad_down) {
                     claw.setTopHand(RobotConstants.Thand_grab);
                 }
-                if (gamepad2.dpad_up){
+                if (gamepad1.dpad_up){
                     claw.setTopHand(RobotConstants.Thand_drop);
                 }
 
-                if (gamepad2.dpad_left) {
+                if (gamepad1.dpad_left) {
                     claw.setTopHand(RobotConstants.Thand_grab);
                 }
-                if (gamepad2.dpad_right){
+                if (gamepad1.dpad_right){
                     claw.setTopHand(RobotConstants.Thand_drop);
                 }
 
-                if (gamepad2.y){
+                if (gamepad1.y){
                     claw.setWristPos(RobotConstants.wrist_pickUpPos);
                 }
-                if (gamepad2.x){
+                if (gamepad1.x){
                     claw.setWristPos(RobotConstants.wrist_dropOffPos);
                 }
 
-                if (gamepad2.right_bumper){
+                if (gamepad1.right_bumper){
                 //    airplane.setPosition(RC.airplane_servoPos);
                 }
 
-                if (gamepad2.start) {
+                if (gamepad1.start) {
                     ext.resetStretch();
                     arm.resetShoulder();
                 }
