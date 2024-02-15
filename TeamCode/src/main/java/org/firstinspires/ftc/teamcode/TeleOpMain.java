@@ -58,10 +58,10 @@ public class TeleOpMain extends LinearOpMode {
                     ext.setPosition(RobotConstants.stretch_pickUp);
                 }
 
-                if (gamepad2.dpad_left) {
+                if (gamepad2.right_bumper) {
                     arm.setPosition(RobotConstants.arm_dropOffPos);
                 }
-                if (gamepad2.dpad_right){
+                if (gamepad2.left_bumper){
                     arm.setPosition(RobotConstants.arm_pickUp);
                 }
 
@@ -69,6 +69,13 @@ public class TeleOpMain extends LinearOpMode {
                     claw.setTopHand(RobotConstants.Thand_grab);
                 }
                 if (gamepad2.dpad_up){
+                    claw.setTopHand(RobotConstants.Thand_drop);
+                }
+
+                if (gamepad2.dpad_left) {
+                    claw.setTopHand(RobotConstants.Thand_grab);
+                }
+                if (gamepad2.dpad_right){
                     claw.setTopHand(RobotConstants.Thand_drop);
                 }
 
