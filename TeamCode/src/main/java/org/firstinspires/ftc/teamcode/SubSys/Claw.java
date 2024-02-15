@@ -14,6 +14,7 @@ public class Claw {
         this.wR = wristRight;
         this.hT = handTop;
         this.hB = handBottom;
+        this.wR.setDirection(Servo.Direction.REVERSE);
     }
     public void setTopHand(double handPos){
         this.hT.setPosition(handPos);

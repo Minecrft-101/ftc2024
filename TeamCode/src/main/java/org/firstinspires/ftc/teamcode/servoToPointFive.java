@@ -17,13 +17,20 @@ import org.firstinspires.ftc.teamcode.SubSys.Stretch;
 public class servoToPointFive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        Servo a = hardwareMap.get(Servo.class, "a");
+        Servo a = hardwareMap.get(Servo.class, "handTop");
+        Servo b = hardwareMap.get(Servo.class, "handBottom");
+        Servo c = hardwareMap.get(Servo.class, "wristRight");
+        Servo d = hardwareMap.get(Servo.class, "wristLeft");
+
 
         waitForStart();
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 a.setPosition(0.5);
+                b.setPosition(0.5);
+                c.setPosition(0.5);
+                d.setPosition(0.5);
                 telemetry.addData("servo pos",a.getPosition());
                 telemetry.update();
             }
