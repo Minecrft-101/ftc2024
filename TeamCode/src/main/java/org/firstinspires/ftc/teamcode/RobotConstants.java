@@ -63,8 +63,10 @@ public class RobotConstants {
     public static double airplane_servoPos = 1;
 
     // Claw
-    public static double wrist_dropOffPos = 1;
-    public static double hand_dropOffPos = 1;
-    public static double wrist_pickUpPos = 1;
-    public static double hand_pickUpPos = 1;
+    public static double wrist_dropOffPos = .5;
+    public final static double Thand_drop = .6;
+    public final static double Bhand_drop = .55;
+    public static double wrist_pickUpPos = .6;
+    public final static double Thand_grab = .45;
+    public final static double Bhand_grab = .35;
 }

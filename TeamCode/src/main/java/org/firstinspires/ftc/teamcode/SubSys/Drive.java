@@ -26,8 +26,7 @@ public class Drive {
     private DcMotorEx frontRight;
     private DcMotorEx backLeft;
     private DcMotorEx backRight;
-    IMU navX;
-    IntegratingGyroscope gyro;
+    private IMU navX;
     private double headingToMaintain = 0;
     private String whatHeadingDo;
     private int xTarget;
@@ -57,8 +56,6 @@ public class Drive {
         this.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        this.gyro = (IntegratingGyroscope)this.navX;
 
         this.x_coeffs = new PIDCoefficients(RobotConstants.x_kP,RobotConstants.x_kI,RobotConstants.x_kD);
         this.x_controller = new PIDFController(this.x_coeffs,0,0,0,(x,y)->RobotConstants.x_kG);
@@ -199,9 +196,7 @@ public class Drive {
         double y = -leftStickX * RobotConstants.MULTIPLIER; // Counteract imperfect strafing
         double rx = -rightStickX * 0.5 * RobotConstants.MULTIPLIER; //what way we want to rotate
 
-        Orientation angles = this.gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double robotHeading = Math.toRadians(angles.firstAngle);
+        double robotHeading = navX.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         if(rx == 0){ //this means that we're trying to maintain our current heading
 
@@ -225,8 +220,8 @@ public class Drive {
             this.headingToMaintain = robotHeading;
         }
         //triangle """magic"""
-        double rotX = x * Math.cos(robotHeading) - y * Math.sin(robotHeading);
-        double rotY = x * Math.sin(robotHeading) + y * Math.cos(robotHeading);
+        double rotX = x * Math.cos(-robotHeading) - y * Math.sin(-robotHeading);
+        double rotY = x * Math.sin(-robotHeading) + y * Math.cos(-robotHeading);
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio, but only when
@@ -251,8 +246,7 @@ public class Drive {
      */
     public double figureOutWhatIsShorter() {
         double result;
-        Orientation angles = this.gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double reading = Math.toRadians(angles.firstAngle);
+        double reading = navX.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double oppositeButEqualReading;
 
         if (reading > 0) {

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.SubSys.Arm;
 import org.firstinspires.ftc.teamcode.SubSys.Drive;
 import org.firstinspires.ftc.teamcode.SubSys.Stretch;
 
-@TeleOp(name = "TeleOpMain", group = "_JVBot")
+@TeleOp(name = "ServoCalibrate", group = "_JVBot")
 public class servoToPointFive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

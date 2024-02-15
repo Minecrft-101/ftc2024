@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.teamcode.SubSys.Airplane;
 import org.firstinspires.ftc.teamcode.SubSys.Arm;
@@ -26,11 +27,11 @@ public class TeleOpMain extends LinearOpMode {
         TouchSensor button = hardwareMap.get(TouchSensor.class, "extLimit");
         int val = 0;
 
-        //Arm arm = new Arm(hardwareMap.get(DcMotorEx.class,"armRot"), hardwareMap.get(TouchSensor.class, "armLimit"));
-        //Stretch ext = new Stretch(hardwareMap.get(DcMotorEx.class, "armExt"), hardwareMap.get(TouchSensor.class, "extLimit"));
+        Arm arm = new Arm(hardwareMap.get(DcMotorEx.class,"armRot"), hardwareMap.get(TouchSensor.class, "armLimit"));
+        Stretch ext = new Stretch(hardwareMap.get(DcMotorEx.class, "armExt"), hardwareMap.get(TouchSensor.class, "extLimit"));
         Drive drive = new Drive(hardwareMap.get(DcMotorEx.class, "frontLeft"),hardwareMap.get(DcMotorEx.class, "frontRight"),hardwareMap.get(DcMotorEx.class, "backLeft"),hardwareMap.get(DcMotorEx.class, "backRight"), hardwareMap.get(IMU.class, "imu"));
         //Airplane airplane = new Airplane(hardwareMap.get(Servo.class, "yeet"));
-       // Claw claw = new Claw(hardwareMap.get(Servo.class, "hand"),hardwareMap.get(Servo.class, "wrist"));
+        Claw claw = new Claw(hardwareMap.get(Servo.class, "handTop"), hardwareMap.get(Servo.class, "handBottom"), hardwareMap.get(Servo.class, "wristLeft"), hardwareMap.get(Servo.class, "wristRight"));
         //nerd
 
         waitForStart();
@@ -51,25 +52,27 @@ public class TeleOpMain extends LinearOpMode {
                 }
 
                 if (gamepad2.a) {
-                    //ext.setPosition(RobotConstants.stretch_dropOffPos);
-                    //arm.setPosition(RobotConstants.arm_dropOffPos);
-                //    claw.set_wristPosition(RobotConstants.wrist_dropOffPos);
-                //    claw.set_handPosition(RobotConstants.hand_dropOffPos);
+                    //ext.setPosition(RC.stretch_dropOffPos);
+                    //arm.setPosition(RC.arm_dropOffPos);
+                    //claw.setTopHand(RobotConstants.Thand_grab);
                 }
                 if (gamepad2.b){
-                    //ext.setPosition(RobotConstants.stretch_pickUp);
-                    //arm.setPosition(RobotConstants.arm_pickUp);
-                //    claw.set_wristPosition(RobotConstants.wrist_pickUpPos);
-                //    claw.set_handPosition(RobotConstants.hand_pickUpPos);
+                    //ext.setPosition(RC.stretch_pickUp);
+                    //arm.setPosition(RC.arm_pickUp);
+                    //claw.setTopHand(RobotConstants.Thand_drop);
                 }
 
                 if (gamepad2.y){
                     //ext.resetStretch();
                     //arm.resetShoulder();
+                    claw.setWristPos(RobotConstants.wrist_pickUpPos);
+                }
+                if (gamepad2.x){
+                    claw.setWristPos(RobotConstants.wrist_dropOffPos);
                 }
 
                 if (gamepad2.right_bumper){
-                //    airplane.setPosition(RobotConstants.airplane_servoPos);
+                //    airplane.setPosition(RC.airplane_servoPos);
 
                 }
 

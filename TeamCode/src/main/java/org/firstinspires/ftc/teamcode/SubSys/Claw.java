@@ -4,18 +4,26 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 public class Claw {
 
-    private Servo w;
-    private Servo h;
+    private Servo wL;
+    private Servo wR;
+    private Servo hT;
+    private Servo hB;
 
-    public Claw(Servo hand, Servo wrist) {
-        this.w = wrist;
-        this.h = hand;
+    public Claw(Servo handTop, Servo handBottom, Servo wristLeft, Servo wristRight) {
+        this.wL = wristLeft;
+        this.wR = wristRight;
+        this.hT = handTop;
+        this.hB = handBottom;
     }
-    public void set_handPosition(double handPos){
-        this.h.setPosition(handPos);
+    public void setTopHand(double handPos){
+        this.hT.setPosition(handPos);
+    }
+    public void setBottomHand(double handPos){
+        this.hB.setPosition(handPos);
     }
 
-    public void set_wristPosition(double wristPos) {
-        this.w.setPosition(wristPos);
+    public void setWristPos(double wristPos) {
+        this.wL.setPosition(wristPos);
+        this.wR.setPosition(wristPos);
     }
 }
