@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.RobotConstants;
 
-@TeleOp(name = "ServoCalibrate", group = "_JVBot")
+@TeleOp(name = "ServoWristCalibrate", group = "_JVBot")
 public class servoWristCheck extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
