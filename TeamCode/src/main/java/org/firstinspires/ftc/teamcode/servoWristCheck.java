@@ -19,6 +19,8 @@ public class servoWristCheck extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 claw.setWristPos(RobotConstants.wrist_dropOffPos);
+                claw.setBottomHand(RobotConstants.Bhand_drop);
+                claw.setTopHand(RobotConstants.Thand_drop);
             }
         }
     }
