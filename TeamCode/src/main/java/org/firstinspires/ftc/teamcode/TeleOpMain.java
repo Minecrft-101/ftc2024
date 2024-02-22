@@ -28,8 +28,10 @@ public class TeleOpMain extends LinearOpMode {
 
         TouchSensor button = hardwareMap.get(TouchSensor.class, "extLimit");
         int val = 0;
-        boolean aPressed = false;
-        boolean isOpen = false;
+        boolean leftPressed = false;
+        boolean isOpenLeft = false;
+        boolean rightPressed = false;
+        boolean isOpenRight = false;
 
         Arm arm = new Arm(hardwareMap.get(DcMotorEx.class, "armRot"), hardwareMap.get(TouchSensor.class, "armLimit"));
         Stretch ext = new Stretch(hardwareMap.get(DcMotorEx.class, "armExt"), hardwareMap.get(TouchSensor.class, "extLimit"));
@@ -48,9 +50,12 @@ public class TeleOpMain extends LinearOpMode {
 
         waitForStart();
 
+
+        claw.setWristPos(ClawV.wrist_stow);
         ext.resetStretch();
         arm.resetShoulder();
         drive.yawReset();
+
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
@@ -63,56 +68,46 @@ public class TeleOpMain extends LinearOpMode {
 
 
                 if (gamepad1.dpad_up) {
-                    //ext.setPosition(LimbV.stretch_dropOffPos);
-                    //arm.setPosition(LimbV.arm_dropOffPos);
-                }
-                if (gamepad1.dpad_down) {
-                    //ext.setPosition(LimbV.stretch_pickUp);
-                    //arm.setPosition(LimbV.arm_pickUp);
-                }
-                if (gamepad1.dpad_left) {
-                    //ext.setPosition(LimbV.stretch_stow);
-                    //arm.setPosition(LimbV.arm_stow);
-                }
-                if (gamepad1.dpad_down) {
-                    //claw.setTopHand(ClawV.Thand_grab);
-                }
-                if (gamepad1.dpad_up) {
-                    //claw.setTopHand(ClawV.Thand_drop);
-                }
-
-                if (gamepad1.dpad_left) {
-                    //claw.setBottomHand(ClawV.Bhand_grab);
-                }
-                if (gamepad1.dpad_right) {
-                    //claw.setBottomHand(ClawV.Bhand_drop);
-                }
-
-                if (gamepad1.x) {
-                    claw.setWristPos(ClawV.wrist_pickUpPos);
-                }
-                if (gamepad1.y) {
+                    ext.setPosition(LimbV.stretch_dropOffPos);
+                    arm.setPosition(LimbV.arm_dropOffPos);
                     claw.setWristPos(ClawV.wrist_dropOffPos);
                 }
-                if (gamepad1.b) {
+                if (gamepad1.dpad_down) {
+                    ext.setPosition(LimbV.stretch_pickUp);
+                    arm.setPosition(LimbV.arm_pickUp);
+                    claw.setWristPos(ClawV.wrist_pickUpPos);
+                }
+                if (gamepad1.dpad_left) {
+                    ext.setPosition(LimbV.stretch_stow);
+                    arm.setPosition(LimbV.arm_stow);
                     claw.setWristPos(ClawV.wrist_stow);
                 }
-                if (gamepad1.a) {
-                    if (gamepad1.a != aPressed) {
-                        isOpen = !isOpen;
+                if (gamepad1.left_bumper) {
+                    if (gamepad1.left_bumper != leftPressed) {
+                        isOpenLeft = !isOpenLeft;
                     }
                 }
-                aPressed = gamepad1.a;
-                if (isOpen) {
+                leftPressed = gamepad1.left_bumper;
+                if (isOpenLeft) {
                     claw.setBottomHand(ClawV.Bhand_drop);
+                }
+                if (!isOpenLeft) {
+                    claw.setBottomHand(ClawV.Bhand_grab);
+                }
+                if (gamepad1.right_bumper) {
+                    if (gamepad1.right_bumper != rightPressed) {
+                        isOpenRight = !isOpenRight;
+                    }
+                }
+                rightPressed = gamepad1.right_bumper;
+                if (isOpenRight) {
                     claw.setTopHand(ClawV.Thand_drop);
                 }
-                if (!isOpen) {
-                    claw.setBottomHand(ClawV.Bhand_grab);
+                if (!isOpenRight) {
                     claw.setTopHand(ClawV.Thand_grab);
                 }
 
-                if (gamepad1.right_bumper) {
+                if (gamepad1.back) {
                     //airplane.setPosition(LimbV.airplane_servoPos);
                 }
 
@@ -122,20 +117,20 @@ public class TeleOpMain extends LinearOpMode {
                     drive.yawReset();
                 }
 
-                //double correctionArm = arm.update();
-                //double correctionExt = ext.update();
+                double correctionArm = arm.update();
+                double correctionExt = ext.update();
 
-                ext.moveManual(left_y);
-                arm.moveManual(right_y);
+                //ext.moveManual(left_y);
+                //arm.moveManual(right_y);
 
-                //drive.drive(left_y, left_x, right_x);
+                drive.drive(left_y, left_x, right_x);
 
                 telemetry.addData("Arm Rotation", arm.getEncoderValue());
                 telemetry.addData("Arm Target", arm.getTarget());
-                //telemetry.addData("arm correction:", correctionArm);
+                telemetry.addData("arm correction:", correctionArm);
                 telemetry.addData("Arm Extension", ext.getEncoderValue());
                 telemetry.addData("Arm Extent Target", ext.getTarget());
-                //telemetry.addData("arm extent correction:",correctionExt);
+                telemetry.addData("arm extent correction:",correctionExt);
                 telemetry.addData("x_distance", drive.getXDistance());
                 telemetry.addData("y_distance", drive.getYDistance());
                 telemetry.addData("yaw", drive.getYaw());
