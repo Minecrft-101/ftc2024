@@ -13,8 +13,9 @@ public class LimbV {
     public static int arm_maxVel = 5000;
     public static int arm_maxAccel = 5000;
     public static int arm_maxJerk = 5000;
-    public static int arm_dropOffPos = 2000;
+    public static int arm_dropOffPos = 2200;
     public static int arm_pickUp = 0;
+    public static int arm_stow = 0;
 
     //Stretch Constants
     public static double stretch_GEAR_RATIO = 5*5;
@@ -25,8 +26,9 @@ public class LimbV {
     public static int stretch_maxVel = 5000;
     public static int stretch_maxAccel = 5000;
     public static int stretch_maxJerk = 5000;
-    public static int stretch_dropOffPos = -2500;
-    public static int stretch_pickUp = 0;
+    public static int stretch_dropOffPos = -2900;
+    public static int stretch_pickUp = -2400;
+    public static int stretch_stow = 0;
 
     // Airplane Launcher
     public static double airplane_servoPos = 1;
