@@ -23,8 +23,8 @@ import org.firstinspires.ftc.teamcode.Variables.DriveV;
 public class TeleOpMain extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+        //FtcDashboard dashboard = FtcDashboard.getInstance();
+        //telemetry = dashboard.getTelemetry();
 
         TouchSensor button = hardwareMap.get(TouchSensor.class, "extLimit");
         int val = 0;
@@ -138,14 +138,17 @@ public class TeleOpMain extends LinearOpMode {
                 //ext.moveManual(left_y);
                 //arm.moveManual(right_y);
 
-                drive.drive(left_y, left_x, 0);
+                drive.drive(left_x, -left_y, 0);
 
+                telemetry.addData("\nArm RotaterMajiger", " Telemetry\n");
                 telemetry.addData("Arm Rotation", arm.getEncoderValue());
                 telemetry.addData("Arm Target", arm.getTarget());
-                telemetry.addData("arm correction:", correctionArm);
+                //telemetry.addData("arm correction:", correctionArm);
+                telemetry.addData("\nExtension", " Telemetry\n");
                 telemetry.addData("Arm Extension", ext.getEncoderValue());
                 telemetry.addData("Arm Extent Target", ext.getTarget());
-                telemetry.addData("arm extent correction:",correctionExt);
+                //telemetry.addData("arm extent correction:",correctionExt);
+                telemetry.addData("\nDrive", " Telemetry\n");
                 telemetry.addData("x_distance", drive.getXDistance());
                 telemetry.addData("y_distance", drive.getYDistance());
                 telemetry.addData("yaw", drive.getYaw());

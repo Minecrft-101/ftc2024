@@ -13,7 +13,7 @@ public class DriveV {
     public static float yawCheck = 2.5F;
     public static double MULTIPLIER = 1;
     public static double STICK_TOLERANCE = 0.1;
-    public static double MINIMUM_TURNING_SPEED = 0.1;
+    public static double MINIMUM_TURNING_SPEED = 0.2;
     public static double ANGULAR_TOLERANCE = Math.toRadians(.5);
     public static double x_kP = 0.009;
     public static double x_kI = 0;
