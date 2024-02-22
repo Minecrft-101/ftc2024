@@ -138,7 +138,7 @@ public class TeleOpMain extends LinearOpMode {
                 //ext.moveManual(left_y);
                 //arm.moveManual(right_y);
 
-                drive.drive(left_x, -left_y, 0);
+                drive.drive(-left_x, left_y, 0);
 
                 telemetry.addData("\nArm RotaterMajiger", " Telemetry\n");
                 telemetry.addData("Arm Rotation", arm.getEncoderValue());
