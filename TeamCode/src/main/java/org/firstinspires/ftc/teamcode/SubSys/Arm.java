@@ -10,7 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.RobotConstants;
+import org.firstinspires.ftc.teamcode.Variables.ClawV;
+import org.firstinspires.ftc.teamcode.Variables.LimbV;
 
 public class Arm {
     private DcMotorEx motor;
@@ -30,16 +31,16 @@ public class Arm {
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        this.coeffs = new PIDCoefficients(RobotConstants.arm_kP,RobotConstants.arm_kI,RobotConstants.arm_kD);
-        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)->RobotConstants.arm_kG);
+        this.coeffs = new PIDCoefficients(LimbV.arm_kP, LimbV.arm_kI, LimbV.arm_kD);
+        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)-> LimbV.arm_kG);
         this.controller.setOutputBounds(-1,1);
 
         this.profile = MotionProfileGenerator.generateSimpleMotionProfile(
                 new MotionState(0,0,0),
                 new MotionState(0,0,0),
-                RobotConstants.arm_maxVel,
-                RobotConstants.arm_maxAccel,
-                RobotConstants.arm_maxJerk
+                LimbV.arm_maxVel,
+                LimbV.arm_maxAccel,
+                LimbV.arm_maxJerk
         );
     }
 
@@ -73,15 +74,15 @@ public class Arm {
     public void setPosition(int t){
         //convert centimeters to ticks
         this.target = t;
-        this.coeffs = new PIDCoefficients(RobotConstants.arm_kP,RobotConstants.arm_kI,RobotConstants.arm_kD);
-        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)->RobotConstants.arm_kG);
+        this.coeffs = new PIDCoefficients(LimbV.arm_kP, LimbV.arm_kI, LimbV.arm_kD);
+        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)-> LimbV.arm_kG);
         if (this.target != this.lastTarget) {
             this.profile = MotionProfileGenerator.generateSimpleMotionProfile(
                     new MotionState(this.motor.getCurrentPosition(),0,0),
                     new MotionState(this.target,0,0),
-                    RobotConstants.arm_maxVel,
-                    RobotConstants.arm_maxAccel,
-                    RobotConstants.arm_maxJerk
+                    LimbV.arm_maxVel,
+                    LimbV.arm_maxAccel,
+                    LimbV.arm_maxJerk
             );
             this.lastTarget = this.target;
             this.timer.reset();

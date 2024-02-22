@@ -10,7 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.RobotConstants;
+import org.firstinspires.ftc.teamcode.Variables.ClawV;
+import org.firstinspires.ftc.teamcode.Variables.LimbV;
 
 public class Stretch {
     private DcMotorEx motor;
@@ -30,16 +31,16 @@ public class Stretch {
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        this.coeffs = new PIDCoefficients(RobotConstants.stretch_kP,RobotConstants.stretch_kI,RobotConstants.stretch_kD);
-        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)->RobotConstants.stretch_kG);
+        this.coeffs = new PIDCoefficients(LimbV.stretch_kP, LimbV.stretch_kI, LimbV.stretch_kD);
+        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)-> LimbV.stretch_kG);
         this.controller.setOutputBounds(-1,1);
 
         this.profile = MotionProfileGenerator.generateSimpleMotionProfile(
                 new MotionState(0,0,0),
                 new MotionState(0,0,0),
-                RobotConstants.stretch_maxVel,
-                RobotConstants.stretch_maxAccel,
-                RobotConstants.stretch_maxJerk
+                LimbV.stretch_maxVel,
+                LimbV.stretch_maxAccel,
+                LimbV.stretch_maxJerk
         );
     }
 
@@ -73,15 +74,15 @@ public class Stretch {
     public void setPosition(int t){
         //convert centimeters to ticks
         this.target = t;
-        this.coeffs = new PIDCoefficients(RobotConstants.stretch_kP,RobotConstants.stretch_kI,RobotConstants.stretch_kD);
-        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)->RobotConstants.stretch_kG);
+        this.coeffs = new PIDCoefficients(LimbV.stretch_kP, LimbV.stretch_kI, LimbV.stretch_kD);
+        this.controller = new PIDFController(this.coeffs,0,0,0,(x,y)-> LimbV.stretch_kG);
         if (this.target != this.lastTarget) {
             this.profile = MotionProfileGenerator.generateSimpleMotionProfile(
                     new MotionState(this.motor.getCurrentPosition(),0,0),
                     new MotionState(this.target,0,0),
-                    RobotConstants.stretch_maxVel,
-                    RobotConstants.stretch_maxAccel,
-                    RobotConstants.stretch_maxJerk
+                    LimbV.stretch_maxVel,
+                    LimbV.stretch_maxAccel,
+                    LimbV.stretch_maxJerk
             );
             this.lastTarget = this.target;
             this.timer.reset();

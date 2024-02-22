@@ -9,13 +9,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.robot.Robot;
 
-import org.firstinspires.ftc.teamcode.SubSys.Airplane;
 import org.firstinspires.ftc.teamcode.SubSys.Arm;
-import org.firstinspires.ftc.teamcode.SubSys.Claw;
 import org.firstinspires.ftc.teamcode.SubSys.Stretch;
 import org.firstinspires.ftc.teamcode.SubSys.Drive;
+
+import org.firstinspires.ftc.teamcode.Variables.ClawV;
+import org.firstinspires.ftc.teamcode.Variables.LimbV;
+import org.firstinspires.ftc.teamcode.Variables.DriveV;
 
 @TeleOp(name = "TeleOpMain", group = "_JVBot") // YOU DID NOT HAVE THIS WRITTEN. THIS IS WHAT TELLS THE ROBOT THIS IS AN OPMODE. IMPORT WAS ALSO NOT THERE. -Nick
 public class TeleOpMain extends LinearOpMode {
@@ -31,7 +32,7 @@ public class TeleOpMain extends LinearOpMode {
         Stretch ext = new Stretch(hardwareMap.get(DcMotorEx.class, "armExt"), hardwareMap.get(TouchSensor.class, "extLimit"));
         Drive drive = new Drive(hardwareMap.get(DcMotorEx.class, "frontLeft"),hardwareMap.get(DcMotorEx.class, "frontRight"),hardwareMap.get(DcMotorEx.class, "backLeft"),hardwareMap.get(DcMotorEx.class, "backRight"), hardwareMap.get(IMU.class, "imu"));
         //Airplane airplane = new Airplane(hardwareMap.get(Servo.class, "yeet"));
-        Claw claw = new Claw(hardwareMap.get(Servo.class, "handTop"), hardwareMap.get(Servo.class, "handBottom"), hardwareMap.get(Servo.class, "wristLeft"), hardwareMap.get(Servo.class, "wristRight"));
+        org.firstinspires.ftc.teamcode.SubSys.Claw claw = new org.firstinspires.ftc.teamcode.SubSys.Claw(hardwareMap.get(Servo.class, "handTop"), hardwareMap.get(Servo.class, "handBottom"), hardwareMap.get(Servo.class, "wristLeft"), hardwareMap.get(Servo.class, "wristRight"));
         //nerd
 
         waitForStart();
@@ -52,42 +53,42 @@ public class TeleOpMain extends LinearOpMode {
                 }
 
                 if (gamepad1.a) {
-                    ext.setPosition(RobotConstants.stretch_dropOffPos);
+                    ext.setPosition(LimbV.stretch_dropOffPos);
                 }
                 if (gamepad1.b) {
-                    ext.setPosition(RobotConstants.stretch_pickUp);
+                    ext.setPosition(LimbV.stretch_pickUp);
                 }
 
                 if (gamepad1.right_bumper) {
-                    arm.setPosition(RobotConstants.arm_dropOffPos);
+                    arm.setPosition(LimbV.arm_dropOffPos);
                 }
                 if (gamepad1.left_bumper){
-                    arm.setPosition(RobotConstants.arm_pickUp);
+                    arm.setPosition(LimbV.arm_pickUp);
                 }
 
                 if (gamepad1.dpad_down) {
-                    claw.setTopHand(RobotConstants.Thand_grab);
+                    claw.setTopHand(ClawV.Thand_grab);
                 }
                 if (gamepad1.dpad_up){
-                    claw.setTopHand(RobotConstants.Thand_drop);
+                    claw.setTopHand(ClawV.Thand_drop);
                 }
 
                 if (gamepad1.dpad_left) {
-                    claw.setTopHand(RobotConstants.Thand_grab);
+                    claw.setTopHand(ClawV.Thand_grab);
                 }
                 if (gamepad1.dpad_right){
-                    claw.setTopHand(RobotConstants.Thand_drop);
+                    claw.setTopHand(ClawV.Thand_drop);
                 }
 
                 if (gamepad1.y){
-                    claw.setWristPos(RobotConstants.wrist_pickUpPos);
+                    claw.setWristPos(ClawV.wrist_pickUpPos);
                 }
                 if (gamepad1.x){
-                    claw.setWristPos(RobotConstants.wrist_dropOffPos);
+                    claw.setWristPos(ClawV.wrist_dropOffPos);
                 }
 
                 if (gamepad1.right_bumper){
-                //    airplane.setPosition(RC.airplane_servoPos);
+                //    airplane.setPosition(LimbV.airplane_servoPos);
                 }
 
                 if (gamepad1.start) {

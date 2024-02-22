@@ -7,17 +7,11 @@ import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
 import com.acmerobotics.roadrunner.profile.MotionState;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.RobotConstants;
-import org.firstinspires.ftc.teamcode.Encoder;
+import org.firstinspires.ftc.teamcode.Variables.DriveV;
 
 import java.util.Locale;
 
@@ -57,27 +51,27 @@ public class Drive {
         this.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        this.x_coeffs = new PIDCoefficients(RobotConstants.x_kP,RobotConstants.x_kI,RobotConstants.x_kD);
-        this.x_controller = new PIDFController(this.x_coeffs,0,0,0,(x,y)->RobotConstants.x_kG);
+        this.x_coeffs = new PIDCoefficients(DriveV.x_kP, DriveV.x_kI, DriveV.x_kD);
+        this.x_controller = new PIDFController(this.x_coeffs,0,0,0,(x,y)-> DriveV.x_kG);
         this.x_controller.setOutputBounds(-1,1);
 
         this.x_profile = MotionProfileGenerator.generateSimpleMotionProfile(
                 new MotionState(0,0,0),
                 new MotionState(0,0,0),
-                RobotConstants.x_maxVel,
-                RobotConstants.x_maxAccel,
-                RobotConstants.x_maxJerk
+                DriveV.x_maxVel,
+                DriveV.x_maxAccel,
+                DriveV.x_maxJerk
         );
-        this.y_coeffs = new PIDCoefficients(RobotConstants.y_kP,RobotConstants.y_kI,RobotConstants.y_kD);
-        this.y_controller = new PIDFController(this.y_coeffs,0,0,0,(x,y)->RobotConstants.y_kG);
+        this.y_coeffs = new PIDCoefficients(DriveV.y_kP, DriveV.y_kI, DriveV.y_kD);
+        this.y_controller = new PIDFController(this.y_coeffs,0,0,0,(x,y)-> DriveV.y_kG);
         this.y_controller.setOutputBounds(-1,1);
 
         this.y_profile = MotionProfileGenerator.generateSimpleMotionProfile(
                 new MotionState(0,0,0),
                 new MotionState(0,0,0),
-                RobotConstants.y_maxVel,
-                RobotConstants.y_maxAccel,
-                RobotConstants.y_maxJerk
+                DriveV.y_maxVel,
+                DriveV.y_maxAccel,
+                DriveV.y_maxJerk
         );
 
         this.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -105,31 +99,31 @@ public class Drive {
         this.xTarget = mmX;
         this.yTarget = mmY;
 
-        this.x_coeffs = new PIDCoefficients(RobotConstants.x_kP,RobotConstants.x_kI,RobotConstants.x_kD);
-        this.x_controller = new PIDFController(this.x_coeffs,0,0,0,(x,y)->RobotConstants.x_kG);
+        this.x_coeffs = new PIDCoefficients(DriveV.x_kP, DriveV.x_kI, DriveV.x_kD);
+        this.x_controller = new PIDFController(this.x_coeffs,0,0,0,(x,y)-> DriveV.x_kG);
         this.x_profile = MotionProfileGenerator.generateSimpleMotionProfile(
                 new MotionState(getXDistance(),0,0),
                 new MotionState(mmX,0,0),
-                RobotConstants.x_maxVel,
-                RobotConstants.x_maxAccel,
-                RobotConstants.x_maxJerk
+                DriveV.x_maxVel,
+                DriveV.x_maxAccel,
+                DriveV.x_maxJerk
         );
         this.x_timer.reset();
 
-        this.y_coeffs = new PIDCoefficients(RobotConstants.y_kP,RobotConstants.y_kI,RobotConstants.y_kD);
-        this.y_controller = new PIDFController(this.y_coeffs,0,0,0,(x,y)->RobotConstants.y_kG);
+        this.y_coeffs = new PIDCoefficients(DriveV.y_kP, DriveV.y_kI, DriveV.y_kD);
+        this.y_controller = new PIDFController(this.y_coeffs,0,0,0,(x,y)-> DriveV.y_kG);
         this.y_profile = MotionProfileGenerator.generateSimpleMotionProfile(
                 new MotionState(getYDistance(),0,0),
                 new MotionState(mmY,0,0),
-                RobotConstants.y_maxVel,
-                RobotConstants.y_maxAccel,
-                RobotConstants.y_maxJerk
+                DriveV.y_maxVel,
+                DriveV.y_maxAccel,
+                DriveV.y_maxJerk
         );
         this.y_timer.reset();
     }
 
     private int convertToMM(int input){
-        return (int) (input*0.15073*RobotConstants.drive_fudge/2);
+        return (int) (input*0.15073* DriveV.drive_fudge/2);
     }
 
     public int getXDistance(){
@@ -192,9 +186,9 @@ public class Drive {
         //+,+,- f goes f, l goes l,rot r goes right
 
 
-        double x = -leftStickY * RobotConstants.MULTIPLIER;
-        double y = -leftStickX * RobotConstants.MULTIPLIER; // Counteract imperfect strafing
-        double rx = -rightStickX * 0.5 * RobotConstants.MULTIPLIER; //what way we want to rotate
+        double x = -leftStickY * DriveV.MULTIPLIER;
+        double y = -leftStickX * DriveV.MULTIPLIER; // Counteract imperfect strafing
+        double rx = -rightStickX * 0.5 * DriveV.MULTIPLIER; //what way we want to rotate
 
         double robotHeading = navX.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
@@ -202,7 +196,7 @@ public class Drive {
 
             //prevents the motors from working when they realistically cant
             boolean isWithinAngularTolerance =
-                    Math.abs(this.figureOutWhatIsShorter()) < RobotConstants.ANGULAR_TOLERANCE;
+                    Math.abs(this.figureOutWhatIsShorter()) < DriveV.ANGULAR_TOLERANCE;
 
             //we turn if we're not within a tolerance
             if(!isWithinAngularTolerance){
@@ -276,11 +270,11 @@ public class Drive {
      */
     private double setToMinimumTurningSpeed(double rx){
 
-        if(Math.abs(rx) < RobotConstants.MINIMUM_TURNING_SPEED) {
+        if(Math.abs(rx) < DriveV.MINIMUM_TURNING_SPEED) {
             if (rx < 0) {
-                return -RobotConstants.MINIMUM_TURNING_SPEED;
+                return -DriveV.MINIMUM_TURNING_SPEED;
             } else {
-                return RobotConstants.MINIMUM_TURNING_SPEED;
+                return DriveV.MINIMUM_TURNING_SPEED;
             }
         }else{
             return rx;
