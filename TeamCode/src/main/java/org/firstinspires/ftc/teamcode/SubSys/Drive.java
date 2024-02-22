@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Variables.DriveV;
@@ -20,7 +21,7 @@ public class Drive {
     private DcMotorEx frontRight;
     private DcMotorEx backLeft;
     private DcMotorEx backRight;
-    private IMU navX;
+    private IMU imu;
     private double headingToMaintain = 0;
     private String whatHeadingDo;
     private int xTarget;
@@ -41,10 +42,17 @@ public class Drive {
         this.frontRight = fR;
         this.backLeft = bL;
         this.backRight = bR;
-        this.navX = n;
+        this.imu = n;
 
-        this.frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+
+        this.imu.initialize(parameters);
+
         this.backLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        this.frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        this.backRight.setDirection(DcMotorEx.Direction.REVERSE);
 
         this.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -150,6 +158,8 @@ public class Drive {
 
     }
 
+    public void yawReset() {imu.resetYaw();}
+
     public void testMotors(int delay, double power) throws InterruptedException {
         this.frontLeft.setPower(power);
         Thread.sleep(delay);
@@ -187,10 +197,10 @@ public class Drive {
 
 
         double x = -leftStickY * DriveV.MULTIPLIER;
-        double y = -leftStickX * DriveV.MULTIPLIER; // Counteract imperfect strafing
-        double rx = -rightStickX * 0.5 * DriveV.MULTIPLIER; //what way we want to rotate
+        double y = leftStickX * DriveV.MULTIPLIER; // Counteract imperfect strafing
+        double rx = rightStickX * 0.5 * DriveV.MULTIPLIER; //what way we want to rotate
 
-        double robotHeading = navX.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         if(rx == 0){ //this means that we're trying to maintain our current heading
 
@@ -220,7 +230,7 @@ public class Drive {
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio, but only when
         // at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
         double frontLeftPower = (rotY + rotX - rx)  / denominator;
         double frontRightPower = (rotY - rotX + rx) / denominator;
         double backLeftPower = (rotY - rotX - rx)   / denominator;
@@ -230,8 +240,6 @@ public class Drive {
         this.frontRight.setPower(frontRightPower);
         this.backLeft.setPower(backLeftPower);
         this.backRight.setPower(backRightPower);
-
-
     }
 
     /** Determines what direction would be shorter to turn in when trying to maintain our current
@@ -240,7 +248,7 @@ public class Drive {
      */
     public double figureOutWhatIsShorter() {
         double result;
-        double reading = navX.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double reading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double oppositeButEqualReading;
 
         if (reading > 0) {
@@ -260,7 +268,7 @@ public class Drive {
         } else {
             result = this.headingToMaintain - reading;
         }
-        return result;
+        return -result;
     }
 
     /** changes our current turning speed to a turning speed that allows us to rotate
@@ -283,5 +291,9 @@ public class Drive {
 
     public String getWhatHeadingDo(){
         return this.whatHeadingDo;
+    }
+
+    public double getYaw(){
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
     }
 }

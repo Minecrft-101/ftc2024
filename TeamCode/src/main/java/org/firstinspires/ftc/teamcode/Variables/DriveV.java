@@ -5,27 +5,27 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public class DriveV {
     //Rev motor constants
-    public static final int TICKS_PER_REV = 28;
-    public static final int MAX_RPM = 6000;
+    public static int TICKS_PER_REV = 28;
+    public static int MAX_RPM = 6000;
 
     //drive constants
-    public static final float yawMax = 5;
-    public static final float yawCheck = 2.5F;
-    public static final double MULTIPLIER = 1;
-    public static final double STICK_TOLERANCE = 0.1;
-    public static final double MINIMUM_TURNING_SPEED = 0.05;
-    public static final double ANGULAR_TOLERANCE = Math.toRadians(0.5);
+    public static float yawMax = 5;
+    public static float yawCheck = 2.5F;
+    public static double MULTIPLIER = 1;
+    public static double STICK_TOLERANCE = 0.1;
+    public static double MINIMUM_TURNING_SPEED = 0.05;
+    public static double ANGULAR_TOLERANCE = Math.toRadians(0.5);
     public static double x_kP = 0.009;
-    public static final double x_kI = 0;
+    public static double x_kI = 0;
     public static double x_kD = 0.0001;
-    public static final double x_kG = 0;
+    public static double x_kG = 0;
     public static int x_maxVel = 5000;
     public static int x_maxAccel = 5000;
     public static int x_maxJerk = 5000;
     public static double y_kP = 0.006;
-    public static final double y_kI = 0;
+    public static double y_kI = 0;
     public static double y_kD = 0.001;
-    public static final double y_kG = 0;
+    public static double y_kG = 0;
     public static int y_maxVel = 5000;
     public static int y_maxAccel = 5000;
     public static int y_maxJerk = 5000;
