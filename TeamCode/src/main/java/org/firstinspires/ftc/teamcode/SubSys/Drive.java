@@ -50,9 +50,9 @@ public class Drive {
 
         this.imu.initialize(parameters);
 
-        this.backLeft.setDirection(DcMotorEx.Direction.REVERSE);
-        this.frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
-        this.backRight.setDirection(DcMotorEx.Direction.REVERSE);
+        this.frontRight.setDirection(DcMotorEx.Direction.REVERSE);
+        //this.frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        //this.backRight.setDirection(DcMotorEx.Direction.REVERSE);
 
         this.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -247,14 +247,14 @@ public class Drive {
      * @return the shorter difference in heading
      */
     public double figureOutWhatIsShorter() {
-        double result;
+        double result = 0;
         double reading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double oppositeButEqualReading;
-
+/*
         if (reading > 0) {
-            oppositeButEqualReading = reading - 2 * Math.PI;
+            oppositeButEqualReading = reading -  Math.PI;
         } else {
-            oppositeButEqualReading = reading + 2 * Math.PI;
+            oppositeButEqualReading = reading +  Math.PI;
         }
 
         double normalReadingDifference = Math.abs(this.headingToMaintain - reading);
@@ -268,7 +268,20 @@ public class Drive {
         } else {
             result = this.headingToMaintain - reading;
         }
-        return -result;
+
+ */
+        //target = 0 and actual >0 rotate right
+        if (reading > 0 && this.headingToMaintain == 0) {
+            result = -reading;
+        } else if (reading < 0 && this.headingToMaintain == 0) {
+            result = -reading;
+        }
+        if (reading > 0 && this.headingToMaintain == 3.14) {
+            result = 3.14 - reading;
+        } else if (reading < 0 && this.headingToMaintain == 3.14) {
+            result = -3.14 - reading;
+        }
+        return result/3.14;
     }
 
     /** changes our current turning speed to a turning speed that allows us to rotate
@@ -295,5 +308,25 @@ public class Drive {
 
     public double getYaw(){
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+    }
+    public double getHeadingToMaintain(){
+        return this.headingToMaintain;
+    }
+    public void setHeading(double rad){
+        //-pi to pi
+        if (rad > Math.PI) {
+            rad -= 2 * Math.PI;
+        } else if (rad <= -Math.PI) {
+            rad += 2 * Math.PI;
+        }
+        this.headingToMaintain = rad;
+    }
+
+    public void flipRobot(){
+        if (this.headingToMaintain == 0) {
+            this.headingToMaintain = 3.14;
+        } else {
+            this.headingToMaintain = 0;
+        }
     }
 }

@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.SubSys;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 public class Claw {
+
 
     private Servo wL;
     private Servo wR;
@@ -26,5 +26,14 @@ public class Claw {
     public void setWristPos(double wristPos) {
         this.wL.setPosition(wristPos);
         this.wR.setPosition(wristPos);
+    }
+    public void wristPos(){
+        wL.getPosition();
+    }
+    public void BottomHandPos(){
+        hB.getPosition();
+    }
+    public void TopHandPos(){
+        hT.getPosition();
     }
 }

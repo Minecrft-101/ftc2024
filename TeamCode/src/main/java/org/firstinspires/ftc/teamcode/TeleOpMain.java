@@ -33,6 +33,10 @@ public class TeleOpMain extends LinearOpMode {
         boolean rightPressed = false;
         boolean isOpenRight = false;
 
+        boolean dpRPressed = false;
+
+        double temp = 0.0;
+
         Arm arm = new Arm(hardwareMap.get(DcMotorEx.class, "armRot"), hardwareMap.get(TouchSensor.class, "armLimit"));
         Stretch ext = new Stretch(hardwareMap.get(DcMotorEx.class, "armExt"), hardwareMap.get(TouchSensor.class, "extLimit"));
         Drive drive = new Drive(hardwareMap.get(DcMotorEx.class, "frontLeft"), hardwareMap.get(DcMotorEx.class, "frontRight"), hardwareMap.get(DcMotorEx.class, "backLeft"), hardwareMap.get(DcMotorEx.class, "backRight"), hardwareMap.get(IMU.class, "imu"));
@@ -82,6 +86,17 @@ public class TeleOpMain extends LinearOpMode {
                     arm.setPosition(LimbV.arm_stow);
                     claw.setWristPos(ClawV.wrist_stow);
                 }
+                if (gamepad1.dpad_right) {
+
+                }
+                if (gamepad1.dpad_right) {
+                    if (gamepad1.dpad_right == false && dpRPressed == true) {
+                        //fool
+                    } else if (gamepad1.dpad_right != dpRPressed) {
+                        drive.flipRobot();
+                    }
+                }
+                dpRPressed = gamepad1.dpad_right;
                 if (gamepad1.left_bumper) {
                     if (gamepad1.left_bumper != leftPressed) {
                         isOpenLeft = !isOpenLeft;
@@ -123,7 +138,7 @@ public class TeleOpMain extends LinearOpMode {
                 //ext.moveManual(left_y);
                 //arm.moveManual(right_y);
 
-                drive.drive(left_y, left_x, right_x);
+                drive.drive(left_y, left_x, 0);
 
                 telemetry.addData("Arm Rotation", arm.getEncoderValue());
                 telemetry.addData("Arm Target", arm.getTarget());
@@ -134,6 +149,7 @@ public class TeleOpMain extends LinearOpMode {
                 telemetry.addData("x_distance", drive.getXDistance());
                 telemetry.addData("y_distance", drive.getYDistance());
                 telemetry.addData("yaw", drive.getYaw());
+                telemetry.addData("Target Rotation", drive.getHeadingToMaintain());
                 telemetry.update();
             }
         }
