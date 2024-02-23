@@ -46,49 +46,70 @@ public class BAutonomL extends LinearOpMode {
         ext.resetStretch();
         arm.resetShoulder();
 
+        boolean doIDrive = true;
+
         waitForStart();
 
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
-                if (stage == 0){
-                    //stage 1
-                    drive.setTarget(-650, 540);
-                }
+        while (opModeIsActive()) {
+            if (stage == 0 && drive.getxTarget() != -650 && drive.getyTarget() != 540){
+                //stage 1
+                drive.setTarget(-650, 540);
+            } else if (stage == 1 && (arm.getTarget() != LimbV.arm_dropOffPos || ext.getTarget() != LimbV.stretch_dropOffPos)) {
+                //stage 2
+                arm.setPosition(LimbV.arm_dropOffPos);
+                ext.setPosition(LimbV.stretch_dropOffPos);
+            } else if (stage == 2 && drive.getxTarget() != -650 && drive.getyTarget() != 980){
+                //stage 3
+                drive.setTarget(-650, 980);
+            } else if (stage == 3) {
+                //stage 4
+                claw.setWristPos(ClawV.wrist_dropOffPos);
+                sleep(100);
+                claw.setBottomHand(ClawV.Bhand_drop);
+                sleep(100);
+                claw.setTopHand(ClawV.Thand_drop);
+            }
+            if (stage == 0 && drive.isAtTarget(10) && (drive.getxTarget() == -650) && (drive.getyTarget() == 540)) {
+                stage = 1;
+                doIDrive = false;
+                sleep(100);
 
-                if (stage == 1) {
-                    //stage 2
-                    arm.setPosition(LimbV.arm_dropOffPos);
-                    ext.setPosition(LimbV.stretch_dropOffPos);
-                }
-                if (stage == 2) {
-                    //stage 3
-                    claw.setWristPos(ClawV.wrist_dropOffPos);
-                    sleep(100);
-                    claw.setBottomHand(ClawV.Bhand_drop);
-                    sleep(100);
-                    claw.setTopHand(ClawV.Thand_drop);
-                }
-                if (drive.isAtTarget(5) && drive.getxTarget() != -650 && drive.getyTarget() != 540) {
-                    stage = 1;
-                    sleep(100);
+            } else if (stage == 1 && arm.isAtTarget(100) && arm.getTarget() == LimbV.arm_dropOffPos && ext.isAtTarget(50) && ext.getTarget() == LimbV.stretch_dropOffPos) {
+                stage = 2;
+                doIDrive = true;
+                sleep(100);
 
-                }
-                if (arm.isAtTarget(5) && arm.getTarget() == LimbV.arm_dropOffPos && ext.isAtTarget(50) && ext.getTarget() == LimbV.stretch_dropOffPos) {
-                    stage = 2;
-                    sleep(100);
+            } else if ((stage == 2) && drive.isAtTarget(5) && (drive.getxTarget() == -650) && (drive.getyTarget() == 980)) {
+                stage = 3;
+                doIDrive = false;
+                sleep(100);
 
-                }
-                if ((stage == 2) && (claw.TopHandPos() == ClawV.Thand_drop)) {
-                    stage = 3;
-                    sleep(100);
+            }
 
-                }
+            arm.update();
+            ext.update();
 
-                arm.update();
-                ext.update();
+            if (!doIDrive) {
+                drive.drive(0,0,0);
+            } else {
                 drive.update();
             }
 
+            telemetry.addData("Stage", stage);
+            telemetry.addData("Driving", doIDrive);
+            telemetry.addData("X", drive.getXDistance());
+            telemetry.addData("Y", drive.getYDistance());
+            telemetry.addData("X Target", drive.getxTarget());
+            telemetry.addData("Y Target", drive.getyTarget());
+            telemetry.addData("X Power", drive.getX_correction());
+            telemetry.addData("Y Power", drive.getY_correction());
+            telemetry.addData("Rotation", arm.getEncoderValue());
+            telemetry.addData("Extension", ext.getEncoderValue());
+            telemetry.addData("Rotation Target", arm.getTarget());
+            telemetry.addData("Extension Target", ext.getTarget());
+            telemetry.addData("Rotation Power", arm.getCorrection());
+            telemetry.addData("Extension Power", ext.getCorrection());
+            telemetry.update();
         }
     }
 }

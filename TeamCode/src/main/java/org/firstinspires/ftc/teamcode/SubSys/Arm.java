@@ -23,6 +23,7 @@ public class Arm {
     private ElapsedTime timer = new ElapsedTime();
 
     private double power = 0;
+    private double correction;
 
     public Arm(DcMotorEx m , TouchSensor t) {
         this.motor = m;
@@ -98,24 +99,28 @@ public class Arm {
         this.controller.setTargetVelocity(state.getV());
         this.controller.setTargetAcceleration(state.getA());
         int motor_Pos = this.motor.getCurrentPosition();
-        double correction = this.controller.update(motor_Pos);
+        this.correction = this.controller.update(motor_Pos);
 
-        if (this.touch.isPressed() && correction < 0) {
+        if (this.touch.isPressed() && this.correction < 0) {
             this.motor.setPower(0);
             this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             this.lastTarget = 0;
             this.target = 0;
         } else {
-            this.motor.setPower(correction);
+            this.motor.setPower(this.correction);
         }
 
-        return correction;
+        return this.correction;
     }
     public boolean isAtTarget(int tol) {
         return this.getEncoderValue() < this.target + tol && this.getEncoderValue() > this.target - tol;
     }
     public void setPower(double pow){
         this.motor.setPower(pow);
+    }
+
+    public double getCorrection() {
+        return this.correction;
     }
 }

@@ -6,7 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 public class LimbV {
     //arm constants
     public static double arm_GEAR_RATIO = (54.0/10.0)*5*5*5;
-    public static double arm_kP = 0.001;
+    public static double arm_kP = 0.005;
     public static double arm_kI = 0;
     public static double arm_kD = 0;
     public static double arm_kG = 0;
@@ -19,7 +19,7 @@ public class LimbV {
 
     //Stretch Constants
     public static double stretch_GEAR_RATIO = 5*5;
-    public static double stretch_kP = 0.013;
+    public static double stretch_kP = 0.005;
     public static double stretch_kI = 0;
     public static double stretch_kD = 0;
     public static double stretch_kG = 0;
