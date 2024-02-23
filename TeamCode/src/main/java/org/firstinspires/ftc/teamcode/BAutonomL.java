@@ -26,27 +26,21 @@ public class BAutonomL extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        TouchSensor button = hardwareMap.get(TouchSensor.class, "extLimit");
         int stage = 0;
         Arm arm = new Arm(hardwareMap.get(DcMotorEx.class,"armRot"), hardwareMap.get(TouchSensor.class, "armLimit"));
         Stretch ext = new Stretch(hardwareMap.get(DcMotorEx.class, "armExt"), hardwareMap.get(TouchSensor.class, "extLimit"));
         Drive drive = new Drive(hardwareMap.get(DcMotorEx.class, "frontLeft"),hardwareMap.get(DcMotorEx.class, "frontRight"),hardwareMap.get(DcMotorEx.class, "backLeft"),hardwareMap.get(DcMotorEx.class, "backRight"), hardwareMap.get(IMU.class, "imu"));
-        //Airplane airplane = new Airplane(hardwareMap.get(Servo.class, "yeet"));
         Claw claw = new org.firstinspires.ftc.teamcode.SubSys.Claw(hardwareMap.get(Servo.class, "handTop"), hardwareMap.get(Servo.class, "handBottom"), hardwareMap.get(Servo.class, "wristLeft"), hardwareMap.get(Servo.class, "wristRight"));
-        //nerd
+
+        boolean doIDrive = true;
 
         claw.setWristPos(ClawV.wrist_stow);
-
-        sleep(100);
-        claw.setBottomHand(ClawV.Bhand_grab);
-        claw.setTopHand(ClawV.Thand_grab);
-
 
         drive.yawReset();
         ext.resetStretch();
         arm.resetShoulder();
 
-        boolean doIDrive = true;
+
 
         waitForStart();
 
@@ -69,7 +63,8 @@ public class BAutonomL extends LinearOpMode {
                 sleep(100);
                 claw.setTopHand(ClawV.Thand_drop);
             }
-            if (stage == 0 && drive.isAtTarget(10) && (drive.getxTarget() == -650) && (drive.getyTarget() == 540)) {
+
+            if (stage == 0 && drive.isAtTarget(50) && (drive.getxTarget() == -650) && (drive.getyTarget() == 540)) {
                 stage = 1;
                 doIDrive = false;
                 sleep(100);
@@ -79,7 +74,7 @@ public class BAutonomL extends LinearOpMode {
                 doIDrive = true;
                 sleep(100);
 
-            } else if ((stage == 2) && drive.isAtTarget(5) && (drive.getxTarget() == -650) && (drive.getyTarget() == 980)) {
+            } else if ((stage == 2) && drive.isAtTarget(50) && (drive.getxTarget() == -650) && (drive.getyTarget() == 980)) {
                 stage = 3;
                 doIDrive = false;
                 sleep(100);
