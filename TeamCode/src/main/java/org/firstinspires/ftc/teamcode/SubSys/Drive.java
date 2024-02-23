@@ -82,8 +82,8 @@ public class Drive {
                 DriveV.y_maxJerk
         );
 
-        this.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -135,11 +135,11 @@ public class Drive {
     }
 
     public int getXDistance(){
-        return convertToMM(-this.backLeft.getCurrentPosition());
+        return convertToMM(-this.frontLeft.getCurrentPosition() * -1);
     }
 
     public int getYDistance(){
-        return convertToMM(-this.frontRight.getCurrentPosition());
+        return convertToMM(-this.frontRight.getCurrentPosition() * -1);
     }
     public void update(){
         double x_correction = 0;
@@ -328,5 +328,16 @@ public class Drive {
         } else {
             this.headingToMaintain = 0;
         }
+    }
+    public boolean isAtTarget(int tol) {
+        boolean x = false;
+        boolean y = false;
+        if (this.getXDistance() < this.xTarget + tol && this.getXDistance() > this.xTarget - tol){
+            x = true;
+        }
+        if (this.getYDistance() < this.yTarget + tol && this.getYDistance() > this.yTarget - tol) {
+            y = true;
+        }
+        return x && y;
     }
 }

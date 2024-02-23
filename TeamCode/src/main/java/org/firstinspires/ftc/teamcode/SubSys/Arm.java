@@ -112,4 +112,10 @@ public class Arm {
 
         return correction;
     }
+    public boolean isAtTarget(int tol) {
+        return this.getEncoderValue() < this.target + tol && this.getEncoderValue() > this.target - tol;
+    }
+    public void setPower(double pow){
+        this.motor.setPower(pow);
+    }
 }

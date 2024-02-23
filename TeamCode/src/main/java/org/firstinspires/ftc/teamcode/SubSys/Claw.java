@@ -27,13 +27,13 @@ public class Claw {
         this.wL.setPosition(wristPos);
         this.wR.setPosition(wristPos);
     }
-    public void wristPos(){
-        wL.getPosition();
+    public double wristPos(){
+        return wL.getPosition();
     }
-    public void BottomHandPos(){
-        hB.getPosition();
+    public double BottomHandPos(){
+        return hB.getPosition();
     }
-    public void TopHandPos(){
-        hT.getPosition();
+    public double TopHandPos(){
+        return hT.getPosition();
     }
 }
