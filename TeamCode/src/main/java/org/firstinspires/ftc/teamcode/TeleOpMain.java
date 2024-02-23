@@ -52,14 +52,13 @@ public class TeleOpMain extends LinearOpMode {
         double left_t = gamepad1.left_trigger;
         double right_t = gamepad1.right_trigger;
 
-        waitForStart();
-
-
+        sleep(1000);
         claw.setWristPos(ClawV.wrist_stow);
         ext.resetStretch();
         arm.resetShoulder();
         drive.yawReset();
 
+        waitForStart();
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
