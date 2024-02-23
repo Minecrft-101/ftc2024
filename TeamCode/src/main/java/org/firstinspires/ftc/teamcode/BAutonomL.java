@@ -51,14 +51,14 @@ public class BAutonomL extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            if (stage == 0 && drive.getxTarget() != -650 && drive.getyTarget() != 540){
+            if (stage == 0 && (drive.getxTarget() != -650 || drive.getyTarget() != 540)){
                 //stage 1
                 drive.setTarget(-650, 540);
             } else if (stage == 1 && (arm.getTarget() != LimbV.arm_dropOffPos || ext.getTarget() != LimbV.stretch_dropOffPos)) {
                 //stage 2
                 arm.setPosition(LimbV.arm_dropOffPos);
                 ext.setPosition(LimbV.stretch_dropOffPos);
-            } else if (stage == 2 && drive.getxTarget() != -650 && drive.getyTarget() != 980){
+            } else if (stage == 2 && (drive.getxTarget() != -650 || drive.getyTarget() != 980)){
                 //stage 3
                 drive.setTarget(-650, 980);
             } else if (stage == 3) {
